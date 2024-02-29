@@ -1,6 +1,6 @@
-## Getting Started
+## Project Description
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Given a specific set of nodes, can implement a few functions and calculate the route between 2 nodes
 
 ## Folder Structure
 
