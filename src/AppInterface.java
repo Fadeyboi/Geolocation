@@ -3,14 +3,14 @@ import java.util.Scanner;
 
 public class AppInterface {
     // Scanner construction
-    private Scanner input = new Scanner(System.in);
+    private static Scanner input = new Scanner(System.in);
 
     // Make a graph, PLEASE EDIT THE FILE PATH TO BE YOUR TEXT.TXT FILE
-    private Graph graph = new Graph(
+    private static Graph graph = new Graph(
             "C:\\Users\\GAMER\\OneDrive\\University\\Year 4\\Semester 2\\CPCS405 Software\\Projects\\Geolocation\\src\\text.txt");
 
             
-    public void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException {
         
 
         // User input for display
@@ -47,7 +47,7 @@ public class AppInterface {
         }
     }
 
-    private void findPlaces() {
+    private static void findPlaces() {
         System.out.print("Enter place id: ");
         String placeId = input.next();
         System.out.print("Do you want to display the reviews backwards (from newest to oldest) [y/n]: ");
@@ -60,13 +60,13 @@ public class AppInterface {
         graph.printReviews(placeId, choice);
     }
 
-    private void findNodeOfPlace() {
+    private static void findNodeOfPlace() {
         System.out.print("Enter category id: ");
         String userCategoryId = input.next();
         graph.printPlaces(userCategoryId);
     }
 
-    private void calcTrip() {
+    private static void calcTrip() {
         // Get starting node
         System.out.print("Enter starting node id: ");
         String startingNode = input.next();

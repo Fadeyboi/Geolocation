@@ -31,20 +31,28 @@ public class Node {
     }
 
     // Prints reviews
+    // public void printReviews(String placeId, boolean backward) {
+    //     for (Place place : places) {
+    //         if (place.getId().equals(placeId)) { // Use .equals() for string comparison
+    //             List<Review> reviewsList = new ArrayList<>(place.getReview());
+    //             if (backward) {
+    //                 Collections.reverse(reviewsList);
+    //             }
+    //             for (Review review : reviewsList) {
+    //                 System.out.println(review);
+    //             }
+    //             break; // Assuming only one place matches the ID, we can break the loop
+    //         }
+    //     }
+    // }
+
     public void printReviews(String placeId, boolean backward) {
         for (Place place : places) {
             if (place.getId().equals(placeId)) { // Use .equals() for string comparison
-                List<Review> reviewsList = new ArrayList<>(place.getReview());
-                if (backward) {
-                    Collections.reverse(reviewsList);
-                }
-                for (Review review : reviewsList) {
-                    System.out.println(review);
-                }
-                break; // Assuming only one place matches the ID, we can break the loop
-            }
+                place.printReviews(backward);
         }
     }
+}
 
 
     // Calculates the distance between 2 nodes given only 1 node as a parameter

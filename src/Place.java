@@ -27,7 +27,6 @@ public class Place {
     public boolean hasCategory(String categoryId) {
         for (Category category : categories) {
             if(category != null && category.getId().equals(categoryId)){
-                if (category.IdExists(categoryId))
                     return true;
             }
         }
@@ -51,9 +50,13 @@ public class Place {
         Collections.reverse(reviewList);
         for (Review review : reviewList) {
             System.out.println(review);
+            }
         }
     }
-}
+
+    public String toString(){
+        return "id: " + id + ", name: " + name + "\t" + categories;
+    }
 
 
     // =============SETTERS AND GETTERS=============
@@ -88,14 +91,6 @@ public class Place {
 
     public LinkedHashSet<Review> getReview() {
         return reviews;
-    }
-
-    public HashSet<Category> getCategories() {
-        return categories;
-    }
-
-    public String toString(){
-        return "id: " + id + ", name: " + name + "\t" + categories;
     }
 
 }

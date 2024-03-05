@@ -97,9 +97,9 @@ public class Graph {
                                 Category[] categoryArr = new Category[currentLineCategory.length];
 
                                 // Iterate through the currentLineCategory array incase there are multiple
-                                // categories and add them to place
+                                // categories and add them to categoryArr
                                 for (int i = 0; i < currentLineCategory.length; i++) {
-                                    categoryArr[i] = Category.findCategoryWithId(currentLine);
+                                    categoryArr[i] = Category.findCategoryWithId(currentLineCategory[i]);
                                 }
 
                                 for (Category category : categoryArr) {
@@ -230,35 +230,4 @@ public class Graph {
             System.out.println("There are no reviews for this place.");
         }
     }
-
-    // =============SETTERS AND GETTERS=============
-
-    /**
-     * @return HashMap<String, Node> return the nodes
-     */
-    public HashMap<String, Node> getNodes() {
-        return nodes;
-    }
-
-    /**
-     * @param nodes the nodes to set
-     */
-    public void setNodes(HashMap<String, Node> nodes) {
-        this.nodes = nodes;
-    }
-
-    /**
-     * @return Map<Node, TreeSet<Node>> return the adjacentNodes
-     */
-    public Map<Node, TreeSet<Node>> getAdjacentNodes() {
-        return adjacentNodes;
-    }
-
-    /**
-     * @param adjacentNodes the adjacentNodes to set
-     */
-    public void setAdjacentNodes(Map<Node, TreeSet<Node>> adjacentNodes) {
-        this.adjacentNodes = adjacentNodes;
-    }
-
 }
