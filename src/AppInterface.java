@@ -1,7 +1,7 @@
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public interface AppInterface {
+public class AppInterface {
     public static void main(String[] args) throws FileNotFoundException {
         // Scanner construction
         Scanner input = new Scanner(System.in);

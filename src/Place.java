@@ -94,4 +94,8 @@ public class Place {
         return categories;
     }
 
+    public String toString(){
+        return "id: " + id + ", name: " + name + "\t" + categories;
+    }
+
 }

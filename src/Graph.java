@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.io.*;
 
-public class Graph implements AppInterface {
+public class Graph {
     // Key is a String, will be ID in this case, value is Node
     private HashMap<String, Node> nodes = new HashMap<>();
     // Sorted set
@@ -28,8 +28,8 @@ public class Graph implements AppInterface {
                 switch (currentLine) {
                     case "//Category Definitions": // If it's Categories, then add them
                         currentLine = input.nextLine(); // Move the cursor
-                        while (!currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                                                                      // formatting, this is the breaker
+                        while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
+                            // formatting, this is the breaker
                             String currentLineArr[] = currentLine.split(","); // Split the line into an array
                             new Category(currentLineArr[0], currentLineArr[1]); // Add the categories
                             currentLine = input.nextLine(); // Move the cursor
@@ -37,33 +37,33 @@ public class Graph implements AppInterface {
                         break;
                     case "//Node Definitions": // If it's Node, then add them
                         currentLine = input.nextLine(); // Move the cursor
-                        while (!currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                                                                      // formatting, this is the breaker
+                        while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
+                            // formatting, this is the breaker
                             String currentLineArr[] = currentLine.split(","); // Split the line into an array
                             nodes.put(currentLineArr[0], new Node(currentLineArr[0],
                                     Double.parseDouble(currentLineArr[1]), Double.parseDouble(currentLineArr[2]))); // Add
-                                                                                                                    // the
-                                                                                                                    // nodes
+                            // the
+                            // nodes
                             currentLine = input.nextLine(); // Move the cursor
                         }
                         break;
                     case "//Adjacent Nodes": // If it's adjacent nodes, then add them
                         currentLine = input.nextLine(); // Move the cursor
-                        while (!currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                                                                      // formatting, this is the breaker
+                        while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
+                            // formatting, this is the breaker
                             String currentLineArr[] = currentLine.split("->"); // Split the line into an array
                             Node keyNode = nodes.get(currentLineArr[0]); // Get the keynode
                             TreeSet<Node> nodeSet = adjacentNodes.get(keyNode); // Make a TreeSet and check if the node
-                                                                                // already exists in adjacentNodes
+                            // already exists in adjacentNodes
                             if (nodeSet == null) { // If the node doesn't exist, then we'll create it, otherwise we just
-                                                   // add it to adjacentNodes
+                                // add it to adjacentNodes
                                 nodeSet = new TreeSet<>(new Comparator<Node>() {
                                     @Override // Override compare
                                     public int compare(Node o1, Node o2) {
                                         double distance1 = Node.calcDistance(keyNode, o1); // Compare distance between
-                                                                                           // keynode and object 1
+                                        // keynode and object 1
                                         double distance2 = Node.calcDistance(keyNode, o2); // Compare distance between
-                                                                                           // keynode and object 2
+                                        // keynode and object 2
                                         if (distance1 > distance2)
                                             return 1;
                                         else if (distance2 > distance1)
@@ -81,16 +81,16 @@ public class Graph implements AppInterface {
 
                     case "//Places at nodes": // If it was Places at nodes, add the place to the node
                         currentLine = input.nextLine(); // Move the cursor
-                        while (!currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                                                                      // formatting, this is the breaker
+                        while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
+                            // formatting, this is the breaker
                             String currentLineNodeId[] = currentLine.split("->"); // Split the line into an array to get
-                                                                                  // the id
+                            // the id
                             String currentLineArr[] = currentLineNodeId[1].split(","); // Split the line into an array
                             Node currentNode = nodes.get(currentLineNodeId[0]); // Save the current node to make it
-                                                                                // easier to work on it
+                            // easier to work on it
                             Place place = new Place(currentLineArr[0], currentLineArr[1]); // Create a place object to
-                                                                                           // store it later using ID
-                                                                                           // and Name
+                            // store it later using ID
+                            // and Name
                             String currentLineCategory[] = currentLineArr[2].split(";"); // Split the line into an array
 
                             // Iterate through the currentLineCategory array incase there are multiple
@@ -103,19 +103,18 @@ public class Graph implements AppInterface {
                                 }
                             }
                             currentNode.addPlace(place); // Finally, add place to the current node
-
                             currentLine = input.nextLine(); // Move the cursor
                         }
                         break;
 
                     case "//Place Reviews": // If it was Place Reviews, then add the review to the place
                         currentLine = input.nextLine(); // Move the cursor
-                        while (!currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                                                                      // formatting, this is the breaker
+                        while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
+                            // formatting, this is the breaker
                             String currentLinePlaceId[] = currentLine.split("->"); // Split the line into an array to get the id
                             String currentLineArr[] = currentLinePlaceId[1].split(","); // Split the line into an array
                             Review review = new Review(currentLineArr[0], currentLineArr[1],
-                            Integer.parseInt(currentLineArr[2])); // Make the review object
+                                    Integer.parseInt(currentLineArr[2])); // Make the review object
                             for (Map.Entry<String, Node> entry : nodes.entrySet()) {
                                 Node node = entry.getValue(); // Get the node only
                                 for (Place place : node.getPlaces()) { // Iterate through all the places in the node

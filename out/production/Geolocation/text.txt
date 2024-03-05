@@ -1,0 +1,95 @@
+//Category Definitions
+1,Resturant
+2,School
+3,Gas Station
+4,Grocery Store
+5,Mall
+6,Pharmacy
+//Node Definitions
+Node1,21.581169,39.131312
+Node2,21.581089,39.133329
+Node3,21.580969,39.135175
+Node4,21.580969,39.136419
+Node5,21.580909,39.137621
+Node6,21.579333,39.137750
+Node7,21.577437,39.137492
+Node8,21.577497,39.136226
+Node9,21.579253,39.136398
+Node10,21.577457,39.135003
+Node11,21.579273,39.135110
+Node12,21.577657,39.133651
+Node13,21.578395,39.133844
+Node14,21.579353,39.133823
+Node15,21.580291,39.133716
+Node16,21.580311,39.132149
+Node17,21.579353,39.132192
+Node18,21.578455,39.132149
+Node19,21.577517,39.132020
+Node20,21.578455,39.131634
+Node21,21.577617,39.130969
+Node22,21.580311,39.131119
+//Adjacent Nodes
+Node1->Node2
+Node1->Node22
+Node2->Node1
+Node2->Node3
+Node3->Node2
+Node3->Node4
+Node3->Node11
+Node4->Node3
+Node4->Node5
+Node4->Node9
+Node5->Node4
+Node5->Node6
+Node6->Node5
+Node6->Node7
+Node7->Node6
+Node7->Node8
+Node8->Node7
+Node8->Node9
+Node8->Node10
+Node9->Node4
+Node9->Node8
+Node10->Node8
+Node10->Node11
+Node10->Node12
+Node11->Node3
+Node11->Node10
+Node11->Node14
+Node12->Node10
+Node12->Node13
+Node12->Node19
+Node13->Node14
+Node13->Node18
+Node13->Node12
+Node14->Node11
+Node14->Node15
+Node14->Node17
+Node14->Node13
+Node15->Node16
+Node15->Node14
+Node16->Node15
+Node16->Node22
+Node16->Node17
+Node17->Node16
+Node17->Node14
+Node17->Node18
+Node18->Node13
+Node18->Node19
+Node18->Node20
+Node19->Node12
+Node19->Node21
+Node20->Node18
+Node21->Node19
+Node21->Node22
+Node22->Node16
+Node22->Node1
+Node22->Node21
+//Places at nodes
+Node1->1,Nahdi,4;6
+Node2->2,Gold Mall,5
+Node8->3,Gasco,3
+//Place Reviews
+1->1,Huge pharmacy with everything we need,5
+1->2,Long lines,2
+2->3,Overcrowded mall,3
