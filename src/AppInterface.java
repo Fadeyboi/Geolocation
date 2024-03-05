@@ -2,13 +2,16 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class AppInterface {
-    public static void main(String[] args) throws FileNotFoundException {
-        // Scanner construction
-        Scanner input = new Scanner(System.in);
+    // Scanner construction
+    private Scanner input = new Scanner(System.in);
 
-        // Make a graph, PLEASE EDIT THE FILE PATH TO BE YOUR TEXT.TXT FILE
-        Graph graph = new Graph(
-                "C:\\Users\\GAMER\\OneDrive\\University\\Year 4\\Semester 2\\CPCS405 Software\\Projects\\Geolocation\\src\\text.txt");
+    // Make a graph, PLEASE EDIT THE FILE PATH TO BE YOUR TEXT.TXT FILE
+    private Graph graph = new Graph(
+            "C:\\Users\\GAMER\\OneDrive\\University\\Year 4\\Semester 2\\CPCS405 Software\\Projects\\Geolocation\\src\\text.txt");
+
+            
+    public void main(String[] args) throws FileNotFoundException {
+        
 
         // User input for display
         while (true) {
@@ -26,32 +29,13 @@ public class AppInterface {
                     c.printAllCategories();
                     break;
                 case 2: // (2) Search the graph for places based on their categories
-                    System.out.print("Enter category id: ");
-                    String userCategoryId = input.next();
-                    graph.printPlaces(userCategoryId);
+                    findNodeOfPlace();
                     break;
                 case 3: // (3) Display the reviews of a place
-                    System.out.print("Enter place id: ");
-                    String placeId = input.next();
-                    System.out.print("Do you want to display the reviews backwards (from newest to oldest) [y/n]: ");
-                    String backward = input.next();
-                    boolean choice;
-                    if (backward == "y")
-                        choice = true;
-                    else
-                        choice = false;
-                    graph.printReviews(placeId, choice);
+                    findPlaces();
                     break;
                 case 4: // (4) Calculate the path between two nodes
-                    // Get starting node
-                    System.out.print("Enter starting node id: ");
-                    String startingNode = input.next();
-                    // Get destination node
-                    System.out.print("Enter destination node id: ");
-                    String destinationNode = input.next();
-                    // Calculate the trip given the starting node and destination node
-                    Trip trip = graph.calcTrip(startingNode, destinationNode);
-                    trip.print(); // Print the path
+                    calcTrip();
                     break;
                 case 5:
                     input.close();
@@ -64,14 +48,33 @@ public class AppInterface {
     }
 
     private void findPlaces() {
-
+        System.out.print("Enter place id: ");
+        String placeId = input.next();
+        System.out.print("Do you want to display the reviews backwards (from newest to oldest) [y/n]: ");
+        String backward = input.next();
+        boolean choice;
+        if (backward == "y")
+            choice = true;
+        else
+            choice = false;
+        graph.printReviews(placeId, choice);
     }
 
     private void findNodeOfPlace() {
-
+        System.out.print("Enter category id: ");
+        String userCategoryId = input.next();
+        graph.printPlaces(userCategoryId);
     }
 
     private void calcTrip() {
-
+        // Get starting node
+        System.out.print("Enter starting node id: ");
+        String startingNode = input.next();
+        // Get destination node
+        System.out.print("Enter destination node id: ");
+        String destinationNode = input.next();
+        // Calculate the trip given the starting node and destination node
+        Trip trip = graph.calcTrip(startingNode, destinationNode);
+        trip.print(); // Print the path
     }
 }

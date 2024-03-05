@@ -94,14 +94,16 @@ public class Graph {
                                 // and Name
                                 String currentLineCategory[] = currentLineArr[2].split(";"); // Split the line into an array
 
+                                Category[] categoryArr = new Category[currentLineCategory.length];
+
                                 // Iterate through the currentLineCategory array incase there are multiple
                                 // categories and add them to place
                                 for (int i = 0; i < currentLineCategory.length; i++) {
-                                    for (Category c : Category.getAllCategories()) {
-                                        if(c.getId().equals(currentLineCategory[i])){
-                                            place.addCategory(c);
-                                        }
-                                    }
+                                    categoryArr[i] = Category.findCategoryWithId(currentLine);
+                                }
+
+                                for (Category category : categoryArr) {
+                                    place.addCategory(category);
                                 }
                                 currentNode.addPlace(place); // Finally, add place to the current node
                                 currentLine = input.nextLine(); // Move the cursor

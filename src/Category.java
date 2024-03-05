@@ -28,6 +28,15 @@ public class Category {
         return this.id + " " + this.name;
     }
 
+    public static Category findCategoryWithId(String id) {
+        for (Category category : allCategories) {
+            if (category.getId().equals(id)) { 
+                return category;
+            }
+        }
+        return null;
+    }
+
     // =============SETTERS AND GETTERS=============
 
     /**
@@ -66,17 +75,5 @@ public class Category {
         this.name = name;
     }
 
-    public static Category getSpecificCategory(String id) {
-        for (Category category : allCategories) {
-            if (category.getId().equals(id)) { 
-                return category;
-            }
-        }
-        return null;
-    }
-
-    public static HashSet<Category> getAllCategories(){
-        return allCategories;
-    }
 
 }
