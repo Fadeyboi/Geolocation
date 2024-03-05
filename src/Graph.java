@@ -211,13 +211,11 @@ public class Graph {
 
     // PrintReviews method that just prints the reviews of a specific place
     public void printReviews(String placeId, boolean backward) {
-        int count = 0; // Count checking if we printed anything or not
         // We have to use Entry to unpack the HashMap
         for (Map.Entry<String, Node> entry : nodes.entrySet()) {
             Node node = entry.getValue(); // Get the node only
             for (Place place : node.getPlaces()) { // Iterate through all the places in the node
                 if(place.getId().equals(placeId)){
-                    count++;
                     if(backward){
                         place.printReviews(backward);
                     }
@@ -225,9 +223,6 @@ public class Graph {
                         place.printReviews(!backward);
                 }
             }
-        }
-        if (count == 0) {
-            System.out.println("There are no reviews for this place.");
         }
     }
 }
