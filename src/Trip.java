@@ -18,7 +18,5 @@ public class Trip {
         for (Node node : path) {
             System.out.printf("<%s, %3.6f, %3.6f>\n", node.getId(), node.getLatitude(), node.getLongitude());
         }
-
     }
-
 }

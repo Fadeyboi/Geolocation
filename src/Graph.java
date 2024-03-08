@@ -1,11 +1,4 @@
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.TreeSet;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.io.*;
 
 public class Graph {
@@ -16,134 +9,152 @@ public class Graph {
 
     // Constructors
     public Graph(String filePath) {
-        // Get the file and scan it so I can use the input
+        // Get the file and scan it, so I can use the input
         File inputFile = new File(filePath);
+        HashSet<Category> tempCategories = new HashSet<>();
+        Map<Node, Place> PlacesInNode = new HashMap<>();
+        int count = 0;
 
         // Exception handling for files
         try (Scanner input = new Scanner(inputFile)) {
-            if(input.hasNextLine()) {
-                // While the file is not empty
-                String currentLine = input.nextLine(); // Get the next line
-                while (input.hasNext()) {
-
-                    switch (currentLine) {
-                        case "//Category Definitions": // If it's Categories, then add them
-                            currentLine = input.nextLine(); // Move the cursor
-                            while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                // formatting, this is the breaker
-                                String currentLineArr[] = currentLine.split(","); // Split the line into an array
-                                new Category(currentLineArr[0], currentLineArr[1]); // Add the categories
+            String currentLine = input.nextLine(); // Get the next line
+            while (input.hasNextLine()) {
+                switch (currentLine) {
+                    case "//Category Definitions": // If it's Categories, then add them
+                        currentLine = input.nextLine(); // Move the cursor
+                        while (!currentLine.matches("//.*")) { // According to the text
+                            // formatting, this is the breaker
+                            String[] currentLineArr = currentLine.split(","); // Split the line into an array
+                            new Category(currentLineArr[0], currentLineArr[1]); // Add the categories
+                            tempCategories.add(new Category(currentLineArr[0], currentLineArr[1]));
+                            if (input.hasNextLine())
                                 currentLine = input.nextLine(); // Move the cursor
-                            }
-                            break;
-                        case "//Node Definitions": // If it's Node, then add them
-                            currentLine = input.nextLine(); // Move the cursor
-                            while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                // formatting, this is the breaker
-                                String currentLineArr[] = currentLine.split(","); // Split the line into an array
-                                nodes.put(currentLineArr[0], new Node(currentLineArr[0],
-                                        Double.parseDouble(currentLineArr[1]), Double.parseDouble(currentLineArr[2]))); // Add
-                                // the
-                                // nodes
+                            else
+                                break;
+                        }
+                        break;
+                    case "//Node Definitions": // If it's Node, then add them
+                        currentLine = input.nextLine(); // Move the cursor
+                        while (!currentLine.matches("//.*")) { // According to the text
+                            // formatting, this is the breaker
+                            String[] currentLineArr = currentLine.split(","); // Split the line into an array
+                            nodes.put(currentLineArr[0], new Node(currentLineArr[0],
+                                    Double.parseDouble(currentLineArr[1]), Double.parseDouble(currentLineArr[2]))); // Add
+                            // the
+                            // nodes
+                            if (input.hasNextLine())
                                 currentLine = input.nextLine(); // Move the cursor
-                            }
-                            break;
-                        case "//Adjacent Nodes": // If it's adjacent nodes, then add them
-                            currentLine = input.nextLine(); // Move the cursor
-                            while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                // formatting, this is the breaker
-                                String currentLineArr[] = currentLine.split("->"); // Split the line into an array
-                                Node keyNode = nodes.get(currentLineArr[0]); // Get the keynode
-                                TreeSet<Node> nodeSet = adjacentNodes.get(keyNode); // Make a TreeSet and check if the node
-                                // already exists in adjacentNodes
-                                if (nodeSet == null) { // If the node doesn't exist, then we'll create it, otherwise we just
-                                    // add it to adjacentNodes
-                                    nodeSet = new TreeSet<>(new Comparator<Node>() {
-                                        @Override // Override compare
-                                        public int compare(Node o1, Node o2) {
-                                            double distance1 = Node.calcDistance(keyNode, o1); // Compare distance between
-                                            // keynode and object 1
-                                            double distance2 = Node.calcDistance(keyNode, o2); // Compare distance between
-                                            // keynode and object 2
-                                            if (distance1 > distance2)
-                                                return 1;
-                                            else if (distance2 > distance1)
-                                                return -1;
-                                            else
-                                                return 0;
-                                        }
-                                    });
-                                    adjacentNodes.put(keyNode, nodeSet); // After we create it, we add it to adjacentNodes
+                            else
+                                break;
+                        }
+                        break;
+                    case "//Adjacent Nodes": // If it's adjacent nodes, then add them
+                        currentLine = input.nextLine(); // Move the cursor
+                        while (!currentLine.matches("//.*")) { // According to the text
+                            // formatting, this is the breaker
+                            String[] currentLineArr = currentLine.split("->"); // Split the line into an array
+                            Node keyNode = nodes.get(currentLineArr[0]); // Get the keynode
+                            TreeSet<Node> nodeSet = adjacentNodes.computeIfAbsent(keyNode, n -> new TreeSet<>(new Comparator<Node>() {
+                                @Override // Override compare
+                                public int compare(Node o1, Node o2) {
+                                    double distance1 = Node.calcDistance(n, o1); // Compare distance between
+                                    // keynode and object 1
+                                    double distance2 = Node.calcDistance(n, o2); // Compare distance between
+                                    // keynode and object 2
+                                    if (distance1 > distance2)
+                                        return 1;
+                                    else if (distance2 > distance1)
+                                        return -1;
+                                    else
+                                        return 0;
                                 }
-                                nodeSet.add(nodes.get(currentLineArr[1]));
+                            })); // Make a TreeSet and check if the node
+                            // already exists in adjacentNodes
+                            // If the node doesn't exist, then we'll create it, otherwise we just
+                            // add it to adjacentNodes
+                            // After we create it, we add it to adjacentNodes
+                            nodeSet.add(nodes.get(currentLineArr[1]));
+                            if (input.hasNextLine())
                                 currentLine = input.nextLine(); // Move the cursor
+                            else
+                                break;
+                        }
+                        break;
+
+                    case "//Places at nodes": // If it was Places at nodes, add the place to the node
+                        currentLine = input.nextLine(); // Move the cursor
+                        while (!currentLine.matches("//.*")) { // According to the text
+                            // formatting, this is the breaker
+                            String[] currentLineNodeId = currentLine.split("->"); // Split the line into an array to get
+                            // the id
+                            String[] currentLineArr = currentLineNodeId[1].split(","); // Split the line into an array
+                            Node currentNode = nodes.get(currentLineNodeId[0]); // Save the current node to make it
+                            // easier to work on it
+                            Place place = new Place(currentLineArr[0], currentLineArr[1]); // Create a place object to store it
+
+                            String[] currentLineCategory = currentLineArr[2].split(";"); // Split the line into an array
+
+                            Category[] categoryArr = new Category[currentLineCategory.length];
+
+                            // Iterate through the currentLineCategory array in case there are multiple
+                            // categories and add them to categoryArr
+                            for (int i = 0; i < currentLineCategory.length; i++) {
+                                for (Category category : tempCategories) {
+                                    if (category.getId().equals(currentLineCategory[i])) {
+                                        categoryArr[i] = category;
+                                    }
+                                }
                             }
-                            break;
 
-                        case "//Places at nodes": // If it was Places at nodes, add the place to the node
-                            currentLine = input.nextLine(); // Move the cursor
-                            while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                // formatting, this is the breaker
-                                String currentLineNodeId[] = currentLine.split("->"); // Split the line into an array to get
-                                // the id
-                                String currentLineArr[] = currentLineNodeId[1].split(","); // Split the line into an array
-                                Node currentNode = nodes.get(currentLineNodeId[0]); // Save the current node to make it
-                                // easier to work on it
-                                Place place = new Place(currentLineArr[0], currentLineArr[1]); // Create a place object to
-                                // store it later using ID
-                                // and Name
-                                String currentLineCategory[] = currentLineArr[2].split(";"); // Split the line into an array
-
-                                Category[] categoryArr = new Category[currentLineCategory.length];
-
-                                // Iterate through the currentLineCategory array incase there are multiple
-                                // categories and add them to categoryArr
-                                for (int i = 0; i < currentLineCategory.length; i++) {
-                                    categoryArr[i] = Category.findCategoryWithId(currentLineCategory[i]);
-                                }
-
-                                for (Category category : categoryArr) {
-                                    place.addCategory(category);
-                                }
-                                currentNode.addPlace(place); // Finally, add place to the current node
+                            for (Category category : categoryArr) {
+                                place.addCategory(category);
+                            }
+                            currentNode.addPlace(place); // Finally, add place to the current node
+                            PlacesInNode.put(currentNode, place);
+                            if (input.hasNextLine())
                                 currentLine = input.nextLine(); // Move the cursor
-                            }
-                            break;
+                            else
+                                break;
+                        }
+                        break;
 
-                        case "//Place Reviews": // If it was Place Reviews, then add the review to the place
-                            currentLine = input.nextLine(); // Move the cursor
-                            while (input.hasNextLine() && !currentLine.matches("//.*") && currentLine != null) { // According to the text
-                                // formatting, this is the breaker
-                                String currentLinePlaceId[] = currentLine.split("->"); // Split the line into an array to get the id
-                                String currentLineArr[] = currentLinePlaceId[1].split(","); // Split the line into an array
-                                Review review = new Review(currentLineArr[0], currentLineArr[1],
-                                        Integer.parseInt(currentLineArr[2])); // Make the review object
-                                for (Map.Entry<String, Node> entry : nodes.entrySet()) {
-                                    Node node = entry.getValue(); // Get the node only
-                                    for (Place place : node.getPlaces()) { // Iterate through all the places in the node
-                                        if (place.getId().equals(currentLinePlaceId[0])) { // If the placeId is equal to the currentLinePlaceId, add the review
-                                            place.addReview(review);
+                    case "//Place Reviews": // If it was Place Reviews, then add the review to the place
+                        currentLine = input.nextLine(); // Move the cursor
+                        while (!currentLine.matches("//.*")) { // According to the text formatting, this is the breaker
+                            String[] currentLinePlaceId = currentLine.split("->"); // Split the line into an array to get the id
+                            String[] currentLineArr = currentLinePlaceId[1].split(","); // Split the line into an array
+                            Review review = new Review(currentLineArr[0], currentLineArr[1], Integer.parseInt(currentLineArr[2])); // Make the review object
+                            for (Map.Entry<String, Node> entry : nodes.entrySet()) {
+                                for (Map.Entry<Node, Place> entry2 : PlacesInNode.entrySet()) {
+                                    if (entry.getValue().equals(entry2.getKey())) {
+                                        if (entry2.getValue().getId().equals(currentLinePlaceId[0])) {
+                                            entry2.getValue().addReview(review);
                                         }
                                     }
                                 }
-                                currentLine = input.nextLine(); // Move the cursor
                             }
-                            break;
-                        default:
-                            break;
-                    }
+                            if (input.hasNextLine())
+                                currentLine = input.nextLine(); // Move the cursor
+                            else
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
-        }
-          catch (FileNotFoundException e) {
+        } catch (
+                FileNotFoundException e) {
             System.out.println("text file not found, please add the file and try again. " + e);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (
+                IndexOutOfBoundsException e) {
             System.out.println("There was an error with the file formatting, please check the formatting. " + e);
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             System.out.println("Unknown error occured, check terminal and solve. " + e);
         }
     }
-    
+
 
     // Calculates the trip using DFS
     public Trip calcTrip(String startN, String endN) {
@@ -191,21 +202,13 @@ public class Graph {
         return false;
     }
 
-    // PrintPlaces method that prints places that have a specific category
+    // System.out.printf("%s has %s (placeId=%s)\n", node.getId(), place.getName(), place.getId());
+// PrintPlaces method that prints places that have a specific category
     public void printPlaces(String categoryId) {
-        int count = 0; // Count checking if we printed anything or not
         // We have to use Entry to unpack the HashMap
         for (Map.Entry<String, Node> entry : nodes.entrySet()) {
             Node node = entry.getValue(); // Get the node only
-            for (Place place : node.getPlaces()) { // Iterate through all the places in the node
-                if(place.hasCategory(categoryId)){
-                    System.out.printf("%s has %s (placeId=%s)\n", node.getId(), place.getName(), place.getId());
-                    count++;
-                }
-            }
-        }
-        if (count == 0) {
-            System.out.println("There are no places with this category.");
+            node.printPlaces(categoryId);
         }
     }
 
@@ -213,16 +216,8 @@ public class Graph {
     public void printReviews(String placeId, boolean backward) {
         // We have to use Entry to unpack the HashMap
         for (Map.Entry<String, Node> entry : nodes.entrySet()) {
-            Node node = entry.getValue(); // Get the node only
-            for (Place place : node.getPlaces()) { // Iterate through all the places in the node
-                if(place.getId().equals(placeId)){
-                    if(backward){
-                        place.printReviews(backward);
-                    }
-                    else
-                        place.printReviews(!backward);
-                }
-            }
+            Node node = entry.getValue(); // Get the node only\
+            node.printReviews(placeId, backward);
         }
     }
 }

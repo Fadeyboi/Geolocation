@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AppInterface {
@@ -9,7 +10,7 @@ public class AppInterface {
     private static Graph graph = new Graph(
             "C:\\Users\\GAMER\\OneDrive\\University\\Year 4\\Semester 2\\CPCS405 Software\\Projects\\Geolocation\\src\\text.txt");
 
-            
+
     public static void main(String[] args) throws FileNotFoundException {
         
 
@@ -25,7 +26,7 @@ public class AppInterface {
 
             switch (userChoice) {
                 case 1: // (1) Display all categories
-                    Category c = new Category();
+                    Category c = new Category(null, null);
                     c.printAllCategories();
                     break;
                 case 2: // (2) Search the graph for places based on their categories
@@ -41,7 +42,7 @@ public class AppInterface {
                     input.close();
                     System.exit(0);
                 default:
-                    System.out.println("Wrong choice, please enter a number from 1 to 4.\n\n");
+                    System.out.println("Wrong choice, please enter a number from 1 to 5.\n\n");
                     break;
             }
         }
@@ -53,7 +54,7 @@ public class AppInterface {
         System.out.print("Do you want to display the reviews backwards (from newest to oldest) [y/n]: ");
         String backward = input.next();
         boolean choice;
-        if (backward == "y")
+        if (backward.equals("y"))
             choice = true;
         else
             choice = false;
