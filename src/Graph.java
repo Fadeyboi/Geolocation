@@ -13,7 +13,6 @@ public class Graph {
         File inputFile = new File(filePath);
         HashSet<Category> tempCategories = new HashSet<>();
         Map<Node, Place> PlacesInNode = new HashMap<>();
-        int count = 0;
 
         // Exception handling for files
         try (Scanner input = new Scanner(inputFile)) {
@@ -54,20 +53,13 @@ public class Graph {
                             // formatting, this is the breaker
                             String[] currentLineArr = currentLine.split("->"); // Split the line into an array
                             Node keyNode = nodes.get(currentLineArr[0]); // Get the keynode
-                            TreeSet<Node> nodeSet = adjacentNodes.computeIfAbsent(keyNode, n -> new TreeSet<>(new Comparator<Node>() {
-                                @Override // Override compare
-                                public int compare(Node o1, Node o2) {
-                                    double distance1 = Node.calcDistance(n, o1); // Compare distance between
-                                    // keynode and object 1
-                                    double distance2 = Node.calcDistance(n, o2); // Compare distance between
-                                    // keynode and object 2
-                                    if (distance1 > distance2)
-                                        return 1;
-                                    else if (distance2 > distance1)
-                                        return -1;
-                                    else
-                                        return 0;
-                                }
+                            // Override compare
+                            TreeSet<Node> nodeSet = adjacentNodes.computeIfAbsent(keyNode, n -> new TreeSet<>((o1, o2) -> {
+                                double distance1 = Node.calcDistance(n, o1); // Compare distance between
+                                // keynode and object 1
+                                double distance2 = Node.calcDistance(n, o2); // Compare distance between
+                                // keynode and object 2
+                                return Double.compare(distance1, distance2);
                             })); // Make a TreeSet and check if the node
                             // already exists in adjacentNodes
                             // If the node doesn't exist, then we'll create it, otherwise we just
@@ -151,7 +143,7 @@ public class Graph {
             System.out.println("There was an error with the file formatting, please check the formatting. " + e);
         } catch (
                 Exception e) {
-            System.out.println("Unknown error occured, check terminal and solve. " + e);
+            System.out.println("Unknown error occurred, check terminal and solve. " + e);
         }
     }
 
@@ -165,7 +157,7 @@ public class Graph {
         Set<Node> isVisited = new HashSet<>(); // A set for visited nodes
 
         // Perform dfs
-        boolean found = dfs(startNode, endNode, pathStack, isVisited, trip);
+        boolean found = dfs(startNode, endNode, pathStack, isVisited);
 
         // If the endNode was found, then add pathStack to trip
         if (found) {
@@ -177,7 +169,7 @@ public class Graph {
     }
 
     // Helper method for calcTrip
-    private boolean dfs(Node current, Node endNode, Stack<Node> pathStack, Set<Node> isVisited, Trip trip) {
+    private boolean dfs(Node current, Node endNode, Stack<Node> pathStack, Set<Node> isVisited) {
         // Start search, add current node to pathStack and isVisited
         pathStack.push(current);
         isVisited.add(current);
@@ -190,7 +182,7 @@ public class Graph {
         // Check adjacentNodes for path
         for (Node node : adjacentNodes.get(current)) {
             if (!isVisited.contains(node)) {
-                boolean found = dfs(node, endNode, pathStack, isVisited, trip); // Recursive search
+                boolean found = dfs(node, endNode, pathStack, isVisited); // Recursive search
                 if (found) {
                     return true; // Path to end node found in recursion
                 }

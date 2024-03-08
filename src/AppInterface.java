@@ -1,5 +1,3 @@
-import java.io.FileNotFoundException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AppInterface {
@@ -11,16 +9,20 @@ public class AppInterface {
             "C:\\Users\\GAMER\\OneDrive\\University\\Year 4\\Semester 2\\CPCS405 Software\\Projects\\Geolocation\\src\\text.txt");
 
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         
 
         // User input for display
         while (true) {
             // Initial message printed
-            System.out.print("Available choices:\n\t(1) Display all categories\n\t(2) Search the graph for " +
-                    "places based on their categories\n\t(3) Display the reviews of a place\n\t(4) Calculate the path between two nodes"
-                    +
-                    "\n\t(5) Exit the program\nEnter choice number: ");
+            System.out.print("""
+                    Available choices:
+                    \t(1) Display all categories
+                    \t(2) Search the graph for places based on their categories
+                    \t(3) Display the reviews of a place
+                    \t(4) Calculate the path between two nodes
+                    \t(5) Exit the program
+                    Enter choice number:\s""");
             // Take user input
             int userChoice = input.nextInt();
 
@@ -51,13 +53,22 @@ public class AppInterface {
     private static void findPlaces() {
         System.out.print("Enter place id: ");
         String placeId = input.next();
-        System.out.print("Do you want to display the reviews backwards (from newest to oldest) [y/n]: ");
-        String backward = input.next();
         boolean choice;
-        if (backward.equals("y"))
-            choice = true;
-        else
-            choice = false;
+        while (true) {
+            System.out.print("Do you want to display the reviews backwards (from newest to oldest) [y/n]: ");
+            String backward = input.next();
+            if (backward.equals("y")) {
+                choice = true;
+                break;
+            }
+            else if (backward.equals("n")) {
+                choice = false;
+                break;
+            }
+            else {
+                System.out.println("Wrong choice, please try again.");
+            }
+        }
         graph.printReviews(placeId, choice);
     }
 

@@ -40,7 +40,7 @@ public class Node {
     public double calcDistance(Node otherNode) {
         final int R = 6371; // Radius of the earth
         double latDistance = Math.toRadians(this.latitude - otherNode.latitude);
-        double lonDistance = Math.toRadians(this.longitude - this.longitude);
+        double lonDistance = Math.toRadians(this.longitude - otherNode.longitude);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
                 + Math.cos(Math.toRadians(otherNode.latitude)) *
                 Math.cos(Math.toRadians(this.latitude))
@@ -55,7 +55,7 @@ public class Node {
     public static double calcDistance(Node start, Node end) {
         final int R = 6371; // Radius of the earth
         double latDistance = Math.toRadians(end.latitude - start.latitude);
-        double lonDistance = Math.toRadians(end.longitude - end.longitude);
+        double lonDistance = Math.toRadians(end.longitude - start.longitude);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
                 + Math.cos(Math.toRadians(start.latitude)) *
                 Math.cos(Math.toRadians(end.latitude))
